@@ -1,0 +1,22 @@
+MYPNV=${PNV/\-rc/rc}
+require pypi [ pnv=${MYPNV} ] setup-py [ import=distutils multibuild=false has_bin=true blacklist="2" ]
+
+DESCRIPTION="BorgBackup (short: Borg) is a deduplicating backup program. Optionally, it supports compression and authenticated encryption."
+HOMEPAGE="https://${PN}.readthedocs.io/"
+
+PLATFORMS="~amd64 ~x86 ~arm7 ~arm"
+LICENCES="borgbackup"
+SLOT="0"
+
+DEPENDENCIES="
+    build:
+        dev-python/setuptools_scm[python_abis:*(-)?]
+        dev-python/Cython[python_abis:*(-)?]
+    build+run:
+        app-arch/lz4
+        sys-apps/acl
+    run:
+        dev-python/msgpack-python:*[>=0.4.6][python_abis:*(-)?]
+    
+"
+WORK=${WORKBASE}/${MYPNV}
