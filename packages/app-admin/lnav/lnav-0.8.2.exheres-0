@@ -1,0 +1,21 @@
+require github [ user=tstack tag=v${PV} ]
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ]
+
+SUMMARY="An advanced log file viewer for the small-scale"
+DESCRIPTION="Watch and analyze your log files from a terminal."
+HOMEPAGE="https://${PN}.org"
+LICENCES="BSD-2"
+
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm7 ~arm"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/pcre
+        dev-db/sqlite:*[>=3.9.0]
+        sys-libs/ncurses
+        sys-libs/readline
+        sys-libs/zlib
+        app-arch/bzip2
+        net-misc/curl
+"
