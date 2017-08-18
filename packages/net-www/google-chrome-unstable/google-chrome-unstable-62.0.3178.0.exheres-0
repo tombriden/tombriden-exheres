@@ -1,0 +1,67 @@
+require gtk-icon-cache
+
+LICENCES="google-chrome"
+
+if [[ ${PN} == google-chrome ]]; then
+    MY_PN=${PN}-stable
+else
+    MY_PN=${PN}
+fi
+MY_P="${MY_PN}_${PV}-1"
+
+DOWNLOADS="https://dl.google.com/linux/chrome/deb/pool/main/g/${MY_PN}/${MY_P}_amd64.deb"
+SLOT="0"
+
+PLATFORMS="~amd64"
+
+CHROME_HOME="opt/google/chrome${PN#google-chrome}"
+
+DEPENDENCIES="
+    run:
+        net-print/cups
+        x11-libs/libXScrnSaver
+    recommendation:
+        fonts/corefonts [[ description = [ Needed to display some websites ] ]]
+"
+
+src_unpack(){
+    default
+    WORK=${WORKBASE}
+}
+
+src_install(){
+    dodir /
+    cd "${IMAGE}" || die
+    tar xf ${WORK}/data.tar.xz -C "${IMAGE}"
+
+    rm -r etc usr/share/menu || die
+    mv usr/share/doc/${MY_PN} usr/share/doc/${PNV} || die
+
+    mkdir usr/${CHOST}
+    mv usr/bin usr/${CHOST}/
+
+    pushd "${CHROME_HOME}/locales" > /dev/null || die
+    #chromium_remove_language_paks
+    popd > /dev/null || die
+
+    for size in 16 22 24 32 48 64 128 256 ; do
+        insinto /usr/share/icons/hicolor/${size}x${size}/apps
+        newins ${CHROME_HOME}/product_logo_${size}.png ${PN}.png
+    done
+
+    pax-mark m "${CHROME_HOME}/chrome"
+
+}
+
+pkg_setup(){
+    exdirectory --allow /opt
+    default
+}
+
+pkg_postinst() {
+    gtk-icon-cache_pkg_postinst
+}
+
+pkg_postrm() {
+    gtk-icon-cache_pkg_postrm
+}
