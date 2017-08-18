@@ -1,0 +1,16 @@
+require cmake
+
+DESCRIPTION="GNOME Shell integration for Chrome/Chromium, Firefox, Vivaldi, Opera browsers"
+HOMEPAGE="https://wiki.gnome.org/Projects/GnomeShellIntegrationForChrome"
+DOWNLOADS="mirror://gnome/sources/${PN}/${PV}/${PNV}.tar.xz"
+
+PLATFORMS="~amd64"
+SLOT="0"
+
+DEPENDENCIES="
+    build+run:
+        app-text/jq
+        app-arch/p7zip
+    run:
+        dev-python/requests
+"
