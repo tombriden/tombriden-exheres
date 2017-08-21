@@ -1,0 +1,38 @@
+# Copyright 2017 Tom Briden
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=miloyip tag=v${PV} ]
+require cmake
+
+SUMMARY="A fast JSON parser/generator for C++ with both SAX/DOM style API"
+
+HOMEPAGE="http://rapidjson.org/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc examples test"
+
+DEPENDENCIES="
+    build:
+        doc? ( app-doc/doxygen )
+        test? (
+            dev-cpp/gtest
+            dev-util/valgrind
+        )
+    build+run:
+"
+
+BUGS_TO="tom@decompile.me.uk"
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DRAPIDJSON_BUILD_THIRDPARTY_GTEST=OFF
+)
+
+CMAKE_SRC_CONFIGURE_OPTIONS=(
+    'doc RAPIDJSON_BUILD_DOC'
+    'examples RAPIDJSON_BUILD_EXAMPLES'
+    'test RAPIDJSON_BUILD_TESTS'
+)
+
+
