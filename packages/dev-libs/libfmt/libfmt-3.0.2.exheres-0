@@ -1,0 +1,22 @@
+# Copyright 2017 Tom Briden
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=fmtlib project=fmt tag=${PV} ]
+require cmake
+
+SUMMARY="Small, safe and fast formatting library"
+HOMEPAGE="https://github.com/fmtlib/fmt"
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DBUILD_SHARE_LIBS:BOOL=TRUE
+)
+
+CMAKE_SOURCE=${WORKBASE}/${PNV}/fmt
+
