@@ -1,0 +1,203 @@
+# Copyright 2015-2017 Timo Gurr <tgurr@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'kodi-9999.ebuild' from Gentoo, which is:
+#     Copyright 1999-2015 Gentoo Foundation
+
+SCM_REPOSITORY="https://github.com/xbmc/xbmc.git"
+
+require scm-git \
+    cmake [ api=2 ] \
+    freedesktop-desktop \
+    gtk-icon-cache \
+    python [ blacklist=3 multibuild=false has_bin=true ]
+
+LIBDVDCSS_REV="2f12236bc1c92f73c21e973363f79eb300de603f"
+LIBDVDREAD_REV="17d99db97e7b8f23077b342369d3c22a6250affd"
+LIBDVDNAV_REV="43b5f81f5fe30bceae3b7cecf2b0ca57fc930dac"
+
+SUMMARY="Kodi is an award-winning free and open source software media center"
+HOMEPAGE="https://${PN}.tv"
+DOWNLOADS+="
+    https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_REV}.tar.gz -> libdvdcss-${LIBDVDCSS_REV}.tar.gz
+    https://github.com/xbmc/libdvdread/archive/${LIBDVDREAD_REV}.tar.gz -> libdvdread-${LIBDVDREAD_REV}.tar.gz
+    https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_REV}.tar.gz -> libdvdnav-${LIBDVDNAV_REV}.tar.gz
+"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    airplay [[ description = [ Enable support for Airplay, wireless local media streaming ] ]]
+    alsa
+    avahi
+    bluetooth
+    nfs [[ description = [ Access remote media via NFS ] ]]
+    pulseaudio
+    samba [[ description = [ Access remote media via samba ] ]]
+    sync [[ description = [ Enable synching multiple Kodi installations via MySQL ] ]]
+    va [[ description = [ Enable hardware Video Acceleration (VA API) ] ]]
+    vdpau [[ description = [ Enable hardware Video Acceleration (VDPAU) for NVidia GPUs ] ]]
+    ( providers: eudev systemd ) [[ number-selected = exactly-one ]]
+    ( providers: ijg-jpeg jpeg-turbo ) [[ number-selected = exactly-one ]]
+    ( providers: libressl openssl ) [[ number-selected = exactly-one ]]
+"
+
+# Doesn't find the kodi-test executable
+RESTRICT="test"
+
+DEPENDENCIES="
+    build:
+        app-doc/doxygen
+        dev-lang/swig[>=2.0]
+        dev-util/gperf
+        sys-devel/cmake
+        virtual/jre:=[>=1.6]
+    build+run:
+        app-arch/lzo:2
+        app-arch/unzip
+        app-arch/zip
+        dev-db/sqlite:3
+        dev-libs/crossguid
+        dev-libs/expat
+        dev-libs/fribidi
+        dev-libs/libcdio
+        dev-libs/libfmt
+        dev-libs/libxml2:2.0
+        dev-libs/libxslt
+        dev-libs/pcre
+        dev-libs/rapidjson
+        dev-libs/tinyxml[>=2.6.2]
+        dev-libs/yajl[>=2.0.0]
+        dev-python/Pillow[python_abis:*(-)?]
+        fonts/dejavu
+        media/ffmpeg[>=3.0][h264]
+        media-libs/freetype:2
+        media-libs/giflib:=[>=4.1.6] [[ note = [ for TexturePacker ] ]]
+        media-libs/glew
+        media-libs/lcms2
+        media-libs/libass[>=0.9.8]
+        media-libs/libpng:= [[ note = [ for TexturePacker ] ]]
+        media-libs/taglib[>=1.9]
+        media-libs/tiff [[ note = [ for TexturePacker ] ]]
+        media-sound/lame
+        net-libs/libmicrohttpd
+        net-libs/libssh
+        net-misc/curl
+        sys-apps/dbus
+        sys-apps/util-linux [[ note = [ libuuid ] ]]
+        sys-libs/libcap
+        x11-dri/libdrm
+        x11-dri/mesa [[ note = [ provides libGL/libGLES ] ]]
+        x11-libs/libX11
+        x11-libs/libXext
+        x11-libs/libXmu
+        x11-libs/libXrandr
+        x11-libs/libXt
+        airplay? ( dev-libs/libplist )
+        alsa? ( sys-sound/alsa-lib )
+        avahi? ( net-dns/avahi )
+        bluetooth? ( net-wireless/bluez )
+        nfs? ( net-fs/libnfs )
+        pulseaudio? ( media-sound/pulseaudio[>=1.0] )
+        samba? ( net-fs/samba )
+        sync? ( dev-db/mysql )
+        va? ( x11-libs/libva[>=0.38.0][opengl] )
+        vdpau? (
+            media/ffmpeg[vdpau(-)]
+            x11-libs/libvdpau
+        )
+        providers:eudev? ( sys-apps/eudev )
+        providers:ijg-jpeg? ( media-libs/jpeg:= )
+        providers:jpeg-turbo? ( media-libs/libjpeg-turbo )
+        providers:libressl? ( dev-libs/libressl:= )
+        providers:openssl? ( dev-libs/openssl )
+        providers:systemd? ( sys-apps/systemd )
+    run:
+        !media/xbmc [[
+            description = [ XBMC was renamed to Kodi upstream ]
+            resolution = uninstall-blocked-after
+        ]]
+    suggestion:
+        media-plugins/kodi-pvr-hts [[
+            description = [ Kodi PVR client Tvheadend HTSP ]
+        ]]
+        media-plugins/kodi-pvr-iptvsimple [[
+            description = [ Kodi PVR client IPTV Simple ]
+        ]]
+        media-plugins/kodi-pvr-vdr-vnsi [[
+            description = [ Kodi PVR client VDR VNSI ]
+        ]]
+"
+
+#CMAKE_SOURCE=${WORKBASE}/${PNV}/cmake
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DBUILD_SHARED_LIBS:BOOL=TRUE
+    -DCMAKE_DISABLE_FIND_PACKAGE_CWiid:BOOL=TRUE
+    -DENABLE_AML:BOOL=FALSE
+    -DENABLE_BLURAY:BOOL=FALSE
+    -DENABLE_CAP:BOOL=TRUE
+    -DENABLE_CCACHE:BOOL=FALSE
+    -DENABLE_CEC:BOOL=FALSE
+    -DENABLE_DBUS:BOOL=TRUE
+    -DENABLE_DVDCSS:BOOL=TRUE
+    -DENABLE_EVENTCLIENTS:BOOL=FALSE
+    -DENABLE_IMX:BOOL=FALSE
+    -DENABLE_INTERNAL_CROSSGUID:BOOL=FALSE
+    -DENABLE_INTERNAL_FFMPEG:BOOL=FALSE
+    -DENABLE_LCMS2:BOOL=TRUE
+    -DENABLE_LDGOLD:BOOL=FALSE
+    -DENABLE_LIRC:BOOL=FALSE
+    -DENABLE_MICROHTTPD:BOOL=TRUE
+    -DENABLE_NONFREE:BOOL=TRUE
+    -DENABLE_OPENGL:BOOL=TRUE
+    -DENABLE_OPENSSL:BOOL=TRUE
+    -DENABLE_OPTICAL:BOOL=TRUE
+    -DENABLE_SDL:BOOL=FALSE
+    -DENABLE_SSH:BOOL=TRUE
+    -DENABLE_UDEV:BOOL=TRUE
+    -DENABLE_UPNP:BOOL=TRUE
+    -DENABLE_X11:BOOL=TRUE
+    -DENABLE_XSLT:BOOL=TRUE
+    -DLIBDVDREAD_URL="${FETCHEDDIR}"/libdvdread-${LIBDVDREAD_REV}.tar.gz
+    -DLIBDVDNAV_URL="${FETCHEDDIR}"/libdvdnav-${LIBDVDNAV_REV}.tar.gz
+    -DLIBDVDCSS_URL="${FETCHEDDIR}"/libdvdcss-${LIBDVDCSS_REV}.tar.gz
+)
+CMAKE_SRC_CONFIGURE_OPTION_ENABLES=(
+    'airplay AIRTUNES'
+    'airplay PLIST'
+    'alsa ALSA'
+    'avahi AVAHI'
+    'bluetooth BLUETOOTH'
+    'nfs NFS'
+    'pulseaudio PULSEAUDIO'
+    'samba SMBCLIENT'
+    'sync MYSQLCLIENT'
+    'va VAAPI'
+    'vdpau VDPAU'
+)
+CMAKE_SRC_CONFIGURE_TESTS=( '-DBUILD_TESTING:BOOL=TRUE -DBUILD_TESTING:BOOL=FALSE' )
+
+#src_prepare() {
+#    edo pushd ${WORKBASE}/${PNV}
+#    expatch "${FILES}"/8b2e0d7fd8d1c2e5d01497c0973acd36313b8238.patch
+#    edo popd
+#    cd ${WORKBASE}/${PNV}
+#    make -C tools/depends/target/libfmt
+#    cmake_src_prepare
+#    # TODO: report upstream, fix multiarch
+#    edo sed \
+#        -e "s:objdump:$(exhost --tool-prefix)objdump:g" \
+#        -i scripts/linux/Macros.cmake
+#}
+
+pkg_postinst() {
+    freedesktop-desktop_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+pkg_postrm() {
+    freedesktop-desktop_pkg_postrm
+    gtk-icon-cache_pkg_postrm
+}
+
