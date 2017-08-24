@@ -1,0 +1,52 @@
+# Copyright 2017 Tom Briden
+# Distributed under the terms of the GNU General Public License v2
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ]
+
+SUMMARY="Single Packet Authorization > Port Knocking"
+DESCRIPTION="
+fwknop stands for the 'FireWall KNock OPerator', and implements an authorization scheme called Single Packet Authorization (SPA). This method of authorization is based around a default-drop packet filter (fwknop supports iptables and firewalld on Linux, ipfw on FreeBSD and Mac OS X, and PF on OpenBSD) and libpcap. SPA is essentially next generation port knocking
+"
+HOMEPAGE="http://www.cipherdyne.org/fwknop/"
+DOWNLOADS="http://www.cipherdyne.org/fwknop/download/${PNV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm7 ~arm"
+MYOPTIONS="
+	client
+	server
+	iptables
+	nfqueue
+	gpg
+"
+
+DEPENDENCIES="
+    build:
+    	server? ( !nfqueue? ( !udp-server? ( net-libs/libpcap ) ) )
+		iptables? ( net-firewall/iptables )
+		nfqueue? ( net-libs/libnetfilter_queue )
+        gpg? (
+            app-crypt/gpgme
+            dev-libs/libassuan
+            dev-libs/libgpg-error
+        )
+    build+run:
+"
+
+BUGS_TO=""
+
+DOCS=( AUTHORS ChangeLog README.md )
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
+	iptables
+)
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+	'server'
+	'client'
+	'gpg gpgme'
+    'nfqueue nfq_capture'
+)
+
+
