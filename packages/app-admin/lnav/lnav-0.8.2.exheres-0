@@ -7,7 +7,7 @@ HOMEPAGE="https://${PN}.org"
 LICENCES="BSD-2"
 
 SLOT="0"
-PLATFORMS="~amd64 ~x86 ~arm7 ~arm"
+PLATFORMS="~amd64 ~x86 ~armv7 ~arm"
 
 DEPENDENCIES="
     build+run:
