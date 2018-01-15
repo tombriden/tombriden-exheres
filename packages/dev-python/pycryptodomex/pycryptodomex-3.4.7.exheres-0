@@ -1,0 +1,20 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="Cryptographic library for Python"
+DESCRIPTION="
+PyCryptodome is a self-contained Python package of low-level cryptographic primitives.
+
+It supports Python 2.4 or newer, all Python 3 versions and PyPy.
+"
+HOMEPAGE="https://pypi.python.org/pypi/${PN}"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"
+
