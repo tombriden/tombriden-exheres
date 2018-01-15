@@ -1,0 +1,24 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="A python client library for Google Play Services OAuth."
+DESCRIPTION="
+gpsoauth allows python code to use the “master token” flow that KB Sriram described at http://sbktech.blogspot.com/2014/01/inside-android-play-services-magic.html.
+
+This can be useful when writing code that poses as a Google app, like gmusicapi does.
+"
+HOMEPAGE="https://pypi.python.org/pypi/gpsoauth"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"
+
+DEPENDENCIES="
+    run:
+        dev-python/pycryptodomex
+"
