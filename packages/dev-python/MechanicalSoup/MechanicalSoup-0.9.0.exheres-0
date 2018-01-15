@@ -1,0 +1,25 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+PNV=${PNV}.post4
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="general purpose python data validator"
+DESCRIPTION="
+A general purpose Python data validator.
+
+Works with Python 2.7 and Python 3.3+
+"
+HOMEPAGE="https://pypi.python.org/pypi/${PN}"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"
+
+DEPENDENCIES="
+    run:
+        dev-python/beautifulsoup4
+"
