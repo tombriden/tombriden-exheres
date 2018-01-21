@@ -1,0 +1,17 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="Fast, Extensible Progress Meter"
+DESCRIPTION="
+Instantly make your loops show a smart progress meter - just wrap any iterable with tqdm(iterable), and you’re done!
+"
+HOMEPAGE="https://pypi.python.org/pypi/${PN}"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"

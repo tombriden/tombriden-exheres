@@ -1,0 +1,26 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="Command Line Tool for Backblaze B2"
+DESCRIPTION="
+The command-line tool that gives easy access to all of the capabilities of B2 Cloud Storage.
+
+This program provides command-line access to the B2 service.
+"
+HOMEPAGE="https://pypi.python.org/pypi/${PN}"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+BUGS_TO="tom@decompile.me.uk"
+
+DEPENDENCIES="
+    run:
+        dev-python/arrow
+        dev-python/logfury
+        dev-python/tqdm
+"

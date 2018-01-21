@@ -1,0 +1,20 @@
+# Copyright 2018 Tom Briden <tom@decompile.me.uk>
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setup-py [ import=setuptools ]
+
+SUMMARY="Toolkit for responsible, low-boilerplate logging of library method calls"
+DESCRIPTION="
+Logfury is for python library maintainers. It allows for responsible, low-boilerplate logging of method calls.
+"
+HOMEPAGE="https://pypi.python.org/pypi/${PN}"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~armv7"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/funcsigs
+"
