@@ -23,4 +23,5 @@ DEPENDENCIES="
         dev-python/arrow
         dev-python/logfury
         dev-python/tqdm
+        dev-python/llfuse
 "
